@@ -11,6 +11,11 @@
     "prepare": "husky install",
     "pre": "lint-staged"
   },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
   "dependencies": {
     "lint-staged": "^15.0.2",
     "react": "^18.2.0",
