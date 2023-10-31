@@ -11,14 +11,20 @@ jobs:
     runs-on: ubuntu-latest # 3 실행 환경 지정
     # 4 실행스텝지정
     steps:
-      - uses: actions/checkout@v3
-        with:
-          # path: our-source
-          # fetch-depth: 3
-          repository: actions/checkout
-          ref: v3
-      - run: ls
-      # - run: git log --pretty=oneline
-      # - run: ls -al
-      # - run: cat .github/workflows/ci.yml
-      # - run: ls -al our-source
+      - name: Checkout source code.
+        uses: actions/checkout@v3
+
+      - name: Check Node v
+        run: node -v
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate build
+        run: npm run build
+
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: aws s3 cp --recursive --region ap-northeast-2 dist s3://my-github-actions-bucket-sss
